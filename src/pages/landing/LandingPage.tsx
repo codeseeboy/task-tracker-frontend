@@ -144,11 +144,6 @@ const LandingPage: React.FC = () => {
               <Link to="/register">
                 <Button size="md">Get Started</Button>
               </Link>
-              <Link to="/learn-more">
-                <Button variant="outline" size="md">
-                  Learn More
-                </Button>
-              </Link>
             </div>
           </div>
           <div className="md:w-1/2">
