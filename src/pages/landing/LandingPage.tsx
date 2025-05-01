@@ -135,10 +135,10 @@ const LandingPage: React.FC = () => {
           <div className="md:w-1/2 mb-8 md:mb-0">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Simple Task Tracking
-              <span className="block text-blue-500">Made for Students</span>
+              <span className="block text-blue-500">For Your Projects</span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-              Keep track of your assignments, projects, and tasks with this simple tool I built for my internship project.
+              Keep track of your assignments, projects, and tasks with this simple, intuitive tool.
             </p>
             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
               <Link to="/register">
@@ -152,7 +152,7 @@ const LandingPage: React.FC = () => {
                 src={
                   theme === "dark"
                     ? "../../dash.png"
-                    : "/dash.pmg"
+                    : "/dash.png"
                 }
                 alt="TaskTracker Dashboard Preview"
                 className="w-full h-auto"
@@ -230,11 +230,11 @@ const LandingPage: React.FC = () => {
             <div className="p-6 md:p-8 text-center">
               <h2 className="text-2xl font-bold text-white mb-4">Ready to get organized?</h2>
               <p className="text-blue-100 mb-6">
-                Start managing your tasks today with this simple task tracker.
+                Start managing your tasks today with TaskTracker.
               </p>
               <Link to="/register">
                 <Button variant="primary" size="md">
-                  Get Started - It's Free!
+                  Get Started
                 </Button>
               </Link>
             </div>
@@ -265,12 +265,11 @@ const LandingPage: React.FC = () => {
             <span className="text-lg font-bold">TaskTracker</span>
           </div>
           <p className="text-gray-400 text-sm">
-            Created by Your Name | © {new Date().getFullYear()} | Internship Project
+            Created by <a href="https://github.com/codeseeboy" className="text-blue-400 hover:text-blue-300" target="_blank" rel="noopener noreferrer">Shashikant Rajput</a> | © {new Date().getFullYear()}
           </p>
           <div className="mt-4 flex justify-center space-x-4">
-            <Link to="/about" className="text-gray-400 hover:text-white text-sm">About</Link>
-            <Link to="/contact" className="text-gray-400 hover:text-white text-sm">Contact</Link>
-            <Link to="/privacy" className="text-gray-400 hover:text-white text-sm">Privacy</Link>
+            <Link to="/login" className="text-gray-400 hover:text-white text-sm">Login</Link>
+            <Link to="/register" className="text-gray-400 hover:text-white text-sm">Sign Up</Link>
           </div>
         </div>
       </footer>
