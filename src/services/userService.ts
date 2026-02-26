@@ -1,7 +1,7 @@
 // userService.ts
 import api from "./api"
 import type { UserUpdateDto } from "../types/auth"
-import type { User } from "../types/user"
+
 import { decryptUserFields } from "../utils/crypto.util"
 
 export const userService = {
