@@ -90,6 +90,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const logout = () => {
+    // Call logout endpoint to clear HTTP-only cookie
+    authService.logout()
     localStorage.removeItem("token")
     setUser(null)
     toast.info("You have been logged out")

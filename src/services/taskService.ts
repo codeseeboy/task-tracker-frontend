@@ -1,13 +1,21 @@
 import api from "./api"
-import type { TaskCreateDto, TaskUpdateDto } from "../types/task"
+import type { TaskCreateDto, TaskUpdateDto, TaskQueryParams } from "../types/task"
 
 export const taskService = {
-  // Update the getTasks method to properly handle the projectId parameter
-  getTasks: async (projectId?: string): Promise<any> => {
-    // Only add the projectId parameter if it exists
-    const url = projectId ? `/tasks?projectId=${projectId}` : "/tasks"
-    console.log("Fetching tasks with URL:", url)
-    return api.get(url)
+  /**
+   * Get tasks with optional pagination, filtering by status, and search by title.
+   */
+  getTasks: async (params: TaskQueryParams = {}): Promise<any> => {
+    const queryParts: string[] = []
+
+    if (params.projectId) queryParts.push(`projectId=${params.projectId}`)
+    if (params.status) queryParts.push(`status=${params.status}`)
+    if (params.search) queryParts.push(`search=${encodeURIComponent(params.search)}`)
+    if (params.page) queryParts.push(`page=${params.page}`)
+    if (params.limit) queryParts.push(`limit=${params.limit}`)
+
+    const queryString = queryParts.length > 0 ? `?${queryParts.join("&")}` : ""
+    return api.get(`/tasks${queryString}`)
   },
 
   getTaskById: async (taskId: string) => {

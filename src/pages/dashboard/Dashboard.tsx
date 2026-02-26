@@ -15,7 +15,7 @@ import { useAuth } from "../../hooks/useAuth"
 const Dashboard: React.FC = () => {
   const { user } = useAuth()
   const { projects, isLoading: isLoadingProjects } = useProjects()
-  const { tasks, isLoading: isLoadingTasks } = useTasks()
+  const { tasks, isLoading: isLoadingTasks } = useTasks({ limit: 100 })
 
   const isLoading = isLoadingProjects || isLoadingTasks
 

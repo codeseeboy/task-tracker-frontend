@@ -4,11 +4,17 @@ A modern React application for managing projects and tasks with user authenticat
 
 ## Features
 
-- **User Authentication**: Secure login and registration
+- **User Authentication**: Secure login and registration with HTTP-only cookie support
 - **Project Management**: Create, view, edit, and delete projects
 - **Task Tracking**: Add tasks with priorities, due dates, and status
+- **Server-side Pagination**: Paginated task listing with page controls
+- **Search by Title**: Search tasks by title (server-side)
+- **Filter by Status**: Filter tasks by status (server-side)
+- **Payload Decryption**: AES-256-CBC decryption of sensitive response fields
+- **Protected Routes**: Authenticated routes with automatic redirects
 - **Responsive Design**: Works seamlessly across desktop and mobile devices
 - **Dashboard**: Visual overview of projects and task progress
+- **Dark/Light Theme**: Toggle between dark and light mode
 
 ## Project Structure
 
@@ -54,7 +60,10 @@ src/
 
    ```
    REACT_APP_API_URL=https://task-tracker-rzm0.onrender.com/api
+   REACT_APP_ENCRYPTION_KEY=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
    ```
+
+   > **Note**: The `REACT_APP_ENCRYPTION_KEY` must match the backend's `ENCRYPTION_KEY` (64 hex characters for AES-256).
 
 4. Start the development server
 
@@ -72,4 +81,6 @@ The application is designed to work with a RESTful API backend. The API endpoint
 
 ## Authentication
 
-The application uses token-based authentication. Upon successful login, the API returns a token that is stored in local storage and included in subsequent API requests.
+The application uses JWT-based authentication with HTTP-only cookies. Upon successful login, the API sets an HTTP-only secure cookie containing the JWT. The cookie is automatically sent with every request via `withCredentials: true` on the Axios client. A fallback `Authorization: Bearer` header is also supported for backward compatibility.
+
+Sensitive user fields (such as email) are encrypted by the backend using AES-256-CBC and decrypted on the frontend using `crypto-js`.

@@ -1,15 +1,19 @@
 // userService.ts
 import api from "./api"
 import type { UserUpdateDto } from "../types/auth"
-import type { AxiosResponse } from "axios"
 import type { User } from "../types/user"
+import { decryptUserFields } from "../utils/crypto.util"
 
 export const userService = {
-  getProfile: async (): Promise<AxiosResponse<User>> => {
-    return api.get("/users/profile")
+  getProfile: async (): Promise<any> => {
+    const response = await api.get("/users/profile")
+    // Decrypt sensitive fields (email) returned from backend
+    return decryptUserFields(response)
   },
 
-  updateProfile: async (userData: UserUpdateDto): Promise<AxiosResponse<User>> => {
-    return api.put("/users/profile", userData)
+  updateProfile: async (userData: UserUpdateDto): Promise<any> => {
+    const response = await api.put("/users/profile", userData)
+    // Decrypt sensitive fields (email) returned from backend
+    return decryptUserFields(response)
   },
 }

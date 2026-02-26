@@ -1,17 +1,21 @@
 
 import axios from "axios"
 import { toast } from "react-toastify"
+import { decryptUserFields } from "../utils/crypto.util"
 
-const API_URL = process.env.REACT_APP_API_URL;
+// Only use REACT_APP_ variables in frontend
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // Send HTTP-only cookies with every request
 })
 
-// Request interceptor for adding the auth token
+// Request interceptor — token is now sent via HTTP-only cookie automatically.
+// Keep Authorization header as fallback for backward compatibility.
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token")
@@ -44,10 +48,24 @@ api.interceptors.response.use(
         return data.map((item) => transformData(item))
       }
 
-      // If it's an object with _id, transform it
+      // If it's an object with _id, transform it (a MongoDB document)
       if (data && typeof data === "object" && "_id" in data) {
         const { _id, __v, ...rest } = data as MongoDocument
-        return { id: _id, ...rest }
+        const transformed = { id: _id, ...rest }
+        // Decrypt encrypted user fields if present (email)
+        if ("email" in transformed) {
+          return decryptUserFields(transformed)
+        }
+        return transformed
+      }
+
+      // If it's a plain object (e.g. paginated response), recurse into its properties
+      if (data && typeof data === "object" && !("_id" in data)) {
+        const result: any = {}
+        for (const key of Object.keys(data)) {
+          result[key] = transformData(data[key])
+        }
+        return result
       }
 
       return data

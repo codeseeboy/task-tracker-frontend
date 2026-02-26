@@ -24,3 +24,23 @@ export interface TaskUpdateDto {
   description?: string
   status?: string
 }
+
+export interface TaskQueryParams {
+  projectId?: string
+  status?: string
+  search?: string
+  page?: number
+  limit?: number
+}
+
+export interface PaginationInfo {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
+export interface PaginatedTasksResponse {
+  tasks: Task[]
+  pagination: PaginationInfo
+}
