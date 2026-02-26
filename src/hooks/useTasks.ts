@@ -1,24 +1,31 @@
 import { useQuery, useMutation, useQueryClient } from "react-query"
 import { toast } from "react-toastify"
 import { taskService } from "../services/taskService"
-import type { TaskCreateDto, TaskUpdateDto } from "../types/task"
+import type { TaskCreateDto, TaskUpdateDto, TaskQueryParams, PaginatedTasksResponse } from "../types/task"
 
-export const useTasks = (projectId?: string) => {
+export const useTasks = (params: TaskQueryParams = {}) => {
   const queryClient = useQueryClient()
-  console.log("useTasks hook called with projectId:", projectId)
 
   const {
-    data: tasks = [],
+    data,
     isLoading,
     error,
-  } = useQuery(["tasks", projectId], () => taskService.getTasks(projectId), {
-    onError: (err) => {
-      console.error("Failed to fetch tasks:", err)
-      toast.error("Failed to fetch tasks")
+  } = useQuery(
+    ["tasks", params],
+    () => taskService.getTasks(params),
+    {
+      onError: (err) => {
+        console.error("Failed to fetch tasks:", err)
+        toast.error("Failed to fetch tasks")
+      },
+      keepPreviousData: true,
     },
-    // Only run the query if projectId is defined when it's required
-    enabled: projectId ? true : true,
-  })
+  )
+
+  // The API now returns { tasks, pagination } from the response interceptor
+  const tasksResponse = data as PaginatedTasksResponse | undefined
+  const tasks = tasksResponse?.tasks || []
+  const pagination = tasksResponse?.pagination || { page: 1, limit: 10, total: 0, totalPages: 0 }
 
   const createTaskMutation = useMutation((newTask: TaskCreateDto) => taskService.createTask(newTask), {
     onSuccess: () => {
@@ -55,6 +62,7 @@ export const useTasks = (projectId?: string) => {
 
   return {
     tasks,
+    pagination,
     isLoading,
     error,
     createTask: createTaskMutation.mutate,

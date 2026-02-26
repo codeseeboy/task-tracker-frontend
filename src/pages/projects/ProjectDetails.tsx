@@ -36,7 +36,7 @@ const ProjectDetails: React.FC = () => {
     isCreating,
     isUpdating,
     isDeleting,
-  } = useTasks(projectId)
+  } = useTasks({ projectId, limit: 100 })
   console.log("Tasks for project:", tasks)
 
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false)
