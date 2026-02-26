@@ -1,4 +1,6 @@
-# Task Tracker Frontend
+# Task Tracker Frontend - Technical Assessment by Shashikant Rajput
+
+**Live Frontend:** [https://task-tracker-v1.vercel.app/](https://task-tracker-v1.vercel.app/)
 
 A modern React application for managing projects and tasks with user authentication and a clean interface.
 
